@@ -1,0 +1,5 @@
+site_name: Venom
+repo_url: https://github.com/cadayton/Venom
+theme: readthedocs
+pages:
+  - Home: index.md
