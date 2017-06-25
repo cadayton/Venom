@@ -57,7 +57,7 @@ Pester\Describe "Manifest" {
     }
 
     Pester\It "has a valid guid" {
-        $ManifestHash.Guid | Should Be "8c5437bf-9dcb-461e-aa58-416011ea78a0"
+        $ManifestHash.Guid | Should Be "af362048-60a5-47ab-8ad9-a158e89dabb7"
     }
 
     Pester\It "has a valid version" {
@@ -69,7 +69,7 @@ Pester\Describe "Manifest" {
     }
 
     Pester\It 'exports all public functions' {
-        $FunctionFiles = Get-ChildItem "$ModulePath\functions" -Filter *.ps1 | Select-Object -ExpandProperty basename
+        $FunctionFiles = Get-ChildItem "$ModulePath\Venom" -Filter *.ps1 | Select-Object -ExpandProperty basename
         $FunctionNames = $FunctionFiles
         $ManifestHash.FunctionsToExport | Should Be $FunctionNames
     }

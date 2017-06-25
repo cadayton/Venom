@@ -18,8 +18,8 @@ Describe "General project validation: $moduleName" {
         $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
         $errors.Count | Should Be 0
     }
-
+    # $moduleRoot is C:\projects\venom
     It "Module '$moduleName' can import cleanly" {
-        {Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force } | Should Not Throw
+        {Import-Module (Join-Path "$moduleRoot\Venom" "$moduleName.psm1") -force } | Should Not Throw
     }
 }
