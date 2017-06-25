@@ -48,9 +48,9 @@ Pester\Describe "Manifest" {
     #     } | Should Not Throw
     # }
 
-    Pester\It "has a valid nested module" {
-        $ManifestHash.NestedModules | Should Be "$ModuleName.psm1"
-    }
+    # Pester\It "has a valid nested module" {
+    #     $ManifestHash.NestedModules | Should Be "$ModuleName.psm1"
+    # }
 
     Pester\It "has a valid Description" {
         $ManifestHash.Description | Should Not BeNullOrEmpty
@@ -74,13 +74,13 @@ Pester\Describe "Manifest" {
     #     $ManifestHash.FunctionsToExport | Should Be $FunctionNames
     # }
 
-    Pester\It 'has a valid license Uri' {
-        $ManifestHash.PrivateData.Values.LicenseUri | Should Be "https://github.com/cadayton/Venom/blob/master/Venom/license"
-    }
+    # Pester\It 'has a valid license Uri' {
+    #     $ManifestHash.PrivateData.Values.LicenseUri | Should Be "https://github.com/cadayton/Venom/blob/master/LICENSE"
+    # }
 
-    Pester\It 'has a valid project Uri' {
-        $ManifestHash.PrivateData.Values.ProjectUri | Should Be "https://github.com/cadayton/Venom"
-    }
+    # Pester\It 'has a valid project Uri' {
+    #     $ManifestHash.PrivateData.Values.ProjectUri | Should Be "https://github.com/cadayton/Venom"
+    # }
 
     Pester\It "gallery tags don't contain spaces" {
         foreach ($Tag in $ManifestHash.PrivateData.Values.tags)

@@ -12,7 +12,7 @@
 RootModule = 'Venom.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.3'
+ModuleVersion = '0.1.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -99,7 +99,7 @@ PrivateData = @{
         # Tags = @()
 
         # A URL to the license for this module.
-        # LicenseUri = 'https://github.com/cadayton/Venom/blob/master/Venom/license'
+        # LicenseUri = 'https://github.com/cadayton/Venom/blob/master/LICENSE'
 
         # A URL to the main website for this project.
         # ProjectUri = 'https://github.com/cadayton/Venom'
