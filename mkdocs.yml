@@ -3,3 +3,19 @@ repo_url: https://github.com/cadayton/Venom
 theme: readthedocs
 pages:
   - Home: index.md
+  - Installation and Setup:
+    -Requirements: Requirements.md
+    -Venom Setup: Venom.md
+    -XMLDB Setup: XMLDB.md
+  -CommandLets:
+    -Get-VeArrayInfo: Get-VeArrayInfo.md
+    -Update-VeArrayInfo: Update-VeArrayInfo.md
+    -Get-VeArrayMetrics (not implemented):
+    -Get-VePureMetrics (not implemented):
+    -Get-VeVplexMetrics (not implemented):
+    -Get-VeSRDFInfo (not implemented):
+    -Update-VeSRDFInfo (not implemented):
+    -Get-VeArrayLogin (not implemented):
+    -Get-VeSANInfo (not implemented):
+    -Set-VeDeviceAlias (not implemented):
+    -Set-VeSymmAlias (not implemented):

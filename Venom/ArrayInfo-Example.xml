@@ -1,0 +1,168 @@
+<arraylist version="1.0">
+  <Array sid="0699" location="Bow" DataCenter="Samish" Org="SOS">
+    <Name>bowvmx0699</Name>
+    <Class>Symmetrix</Class>
+    <Model>VMAX2-1</Model>
+    <Monitor>0</Monitor>
+    <remote>_PX038</remote>
+    <unisphere>sanmgmt01</unisphere>
+    <username>admin</username>
+    <usage>General</usage>
+    <sn>000292600699</sn>
+    <Rack>B231</Rack>
+    <Row>31</Row>
+    <PanelRU>1-32</PanelRU>
+    <total_usable_tb>754</total_usable_tb>
+    <total_used_tb>399</total_used_tb>
+    <total_free_tb>355</total_free_tb>
+    <percent_full>53</percent_full>
+    <subs_percent>113</subs_percent>
+    <t0_percent_full>83</t0_percent_full>
+    <t0_subs_percent>0</t0_subs_percent>
+    <t1_percent_full>39</t1_percent_full>
+    <t1_subs_percent>139</t1_subs_percent>
+    <t2_percent_full>76</t2_percent_full>
+    <t2_subs_percent>58</t2_subs_percent>
+    <LastUpdated>06/17/2017 17:25</LastUpdated>
+  </Array>
+  <Array sid="0010" location="Bow" DataCenter="Samish" Org="SOS">
+    <Name>bowpur0010</Name>
+    <Class>Pure</Class>
+    <Model>FA-m70</Model>
+    <Monitor>0</Monitor>
+    <remote>10.92.105.4</remote>
+    <username>pureuser</username>
+    <usage>General</usage>
+    <sn>10</sn>
+    <total_usable_tb>63</total_usable_tb>
+    <total_used_tb>49</total_used_tb>
+    <total_free_tb>15</total_free_tb>
+    <percent_full>77</percent_full>
+    <subs_percent>6</subs_percent>
+    <LastUpdated>06/17/2017 17:22</LastUpdated>
+  </Array>
+  <Array sid="0700" location="Bow" DataCenter="Samish" Org="SOS">
+    <Name>bowvmx0700</Name>
+    <Class>Symmetrix</Class>
+    <Model>VMAX3-450F</Model>
+    <Monitor>0</Monitor>
+    <remote>_PX048</remote>
+    <usage>ESX Only</usage>
+    <sn>000197000700</sn>
+    <unisphere>bowvmx0700a</unisphere>
+    <username>admin</username>
+    <unisphere1>pxvmx0700-mgmt1</unisphere1>
+    <esrs0>bowvmx0700-esrs0</esrs0>
+    <esrs1>bowvmx0700-esrs1</esrs1>
+    <vapp>:5480</vapp>
+    <vappuser>admin</vappuser>
+    <ecom>:5989/EcomConfig</ecom>
+    <ecomuser>admim</ecomuser>
+    <total_usable_tb>467</total_usable_tb>
+    <total_used_tb>38</total_used_tb>
+    <total_free_tb>428</total_free_tb>
+    <percent_full> </percent_full>
+    <subs_percent> </subs_percent>
+    <t0_percent_full>8</t0_percent_full>
+    <t0_subs_percent>115</t0_subs_percent>
+    <t1_percent_full> </t1_percent_full>
+    <t1_subs_percent>
+    </t1_subs_percent>
+    <t2_percent_full> </t2_percent_full>
+    <t2_subs_percent>
+    </t2_subs_percent>
+    <LastUpdated>06/17/2017 17:21</LastUpdated>
+  </Array>
+  <Array sid="0702" location="Bow" DataCenter="Samish" Org="SOS">
+    <Name>bowvpx0702</Name>
+    <Class>VPLEX</Class>
+    <Model>VS2</Model>
+    <Monitor>0</Monitor>
+    <remote>10.10.10.10</remote>
+    <usage>General</usage>
+    <sn>00150600702</sn>
+    <total_usable_tb>0</total_usable_tb>
+    <total_used_tb>0</total_used_tb>
+    <total_free_tb>0</total_free_tb>
+    <percent_full>0</percent_full>
+    <subs_percent>0</subs_percent>
+    <LastUpdated>TBD</LastUpdated>
+  </Array>
+  <Array sid="0701" location="Dusty" DataCenter="Snake" Org="Mojo">
+    <Name>dusvmx0701</Name>
+    <Class>Symmetrix</Class>
+    <Model>VMAX3-250F</Model>
+    <Monitor>0</Monitor>
+    <remote>_PX038</remote>
+    <usage>General</usage>
+    <sn>000197800398</sn>
+    <unisphere>pxvmx701a</unisphere>
+    <username>admin</username>
+    <unisphere1>dusvmx0701-mgmt1</unisphere1>
+    <esrs0>dusvmx0701-esrs0</esrs0>
+    <esrs1>dusvmx0701-esrs1</esrs1>
+    <vapp>:5480</vapp>
+    <vappuser>admin</vappuser>
+    <ecom>:5989/EcomConfig</ecom>
+    <total_usable_tb>246</total_usable_tb>
+    <total_used_tb>66</total_used_tb>
+    <total_free_tb>180</total_free_tb>
+    <percent_full> </percent_full>
+    <subs_percent> </subs_percent>
+    <t0_percent_full>27</t0_percent_full>
+    <t0_subs_percent>189</t0_subs_percent>
+    <t1_percent_full> </t1_percent_full>
+    <t1_subs_percent>
+    </t1_subs_percent>
+    <t2_percent_full> </t2_percent_full>
+    <t2_subs_percent>
+    </t2_subs_percent>
+    <LastUpdated>06/17/2017 17:21</LastUpdated>
+  </Array>
+  <Array sid="0001" location="Dusty" DataCenter="Snake" Org="Mojo">
+    <Name>dusifs0001</Name>
+    <Class>IBM-Flash</Class>
+    <Model>System 840</Model>
+    <Monitor>0</Monitor>
+    <remote>10.10.10.12</remote>
+    <usage>All-Flash</usage>
+    <sn>1321001-9843-AEZ</sn>
+    <total_usable_tb>38.4</total_usable_tb>
+    <total_used_tb>36.4</total_used_tb>
+    <total_free_tb>2</total_free_tb>
+    <percent_full>95</percent_full>
+    <subs_percent>100</subs_percent>
+    <LastUpdated>10/3/2016 08:05</LastUpdated>
+  </Array>
+  <Array sid="0703" location="Bow" DataCenter="Snake" Org="Mojo">
+    <Name>dusvnx0703</Name>
+    <Class>VNX</Class>
+    <Model>7600</Model>
+    <Type>Block</Type>
+    <remote>pxvnx2309</remote>
+    <usage>NPE</usage>
+    <sn>APM00145140703</sn>
+    <SPA>10.10.10.10</SPA>
+    <SPB>10.10.10.11</SPB>
+    <Monitor>0</Monitor>
+    <MAXPOOLID>3</MAXPOOLID>
+    <total_usable_tb>578</total_usable_tb>
+    <total_used_tb>463</total_used_tb>
+    <total_free_tb>299</total_free_tb>
+    <percent_full>47</percent_full>
+    <subs_percent>159</subs_percent>
+    <t0_percent_full>
+    </t0_percent_full>
+    <t0_subs_percent>
+    </t0_subs_percent>
+    <t1_percent_full>
+    </t1_percent_full>
+    <t1_subs_percent>
+    </t1_subs_percent>
+    <t2_percent_full>
+    </t2_percent_full>
+    <t2_subs_percent>
+    </t2_subs_percent>
+    <LastUpdated>02/23/2017 08:00</LastUpdated>
+  </Array>
+</arraylist>

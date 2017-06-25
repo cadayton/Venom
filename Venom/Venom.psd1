@@ -21,7 +21,7 @@ ModuleVersion = '1.0'
 GUID = 'af362048-60a5-47ab-8ad9-a158e89dabb7'
 
 # Author of this module
-Author = 'Craig'
+Author = 'Craig Dayton'
 
 # Company or vendor of this module
 CompanyName = 'Unknown'
@@ -69,7 +69,7 @@ Description = 'SAN Automation with Powershell'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = @('Get-VeArrayInfo','Update-VeArrayInfo')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -87,7 +87,8 @@ AliasesToExport = '*'
 # ModuleList = @()
 
 # List of all files packaged with this module
-# FileList = @()
+FileList = @('\Venom\Venom.psd1','ReadMe.md','\Venom\Local\Export-PSCredentials.ps1','\Venom\Local\Import-PSCredentials.ps1',
+  '\Venom\Local\Set-Ignore-SelfSignedCerts.ps1')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

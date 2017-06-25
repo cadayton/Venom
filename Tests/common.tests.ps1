@@ -1,12 +1,9 @@
 $ProjectPath = Split-Path $PSScriptRoot
 
-if ($env:APPVEYOR)
-{
+if ($env:APPVEYOR) {
     $ModuleName = $env:Appveyor_Project_Name
     $Version = $env:APPVEYOR_BUILD_VERSION
-}
-else
-{
+} else {
     $ModuleName = Split-Path $ProjectPath -Leaf
     $Version = "0.1.0"
 }
@@ -27,13 +24,17 @@ Pester\Describe 'PSScriptAnalyzer' {
     }
 }
 
-Pester\Describe "Docs" {
-    Pester\It "help file exists" {
-        $DocsPath = Join-Path $ModulePath "en-US"
-        $Doc = Join-Path $DocsPath "$ModuleName-help.xml"
-        Test-Path $Doc | Should Be $true
-    }
-}
+#
+# Help is embedded within each exported function.
+# Maybe use PlatyPS someother time.
+#
+# Pester\Describe "Docs" {
+#     Pester\It "help file exists" {
+#         $DocsPath = Join-Path $ModulePath "en-US"
+#         $Doc = Join-Path $DocsPath "$ModuleName-help.xml"
+#         Test-Path $Doc | Should Be $true
+#     }
+# }
 
 # test the module manifest - exports the right functions, processes the right formats, and is generally correct
 Pester\Describe "Manifest" {
@@ -72,15 +73,15 @@ Pester\Describe "Manifest" {
         $FunctionNames = $FunctionFiles
         $ManifestHash.FunctionsToExport | Should Be $FunctionNames
     }
-    
+
     Pester\It 'has a valid license Uri' {
-        $ManifestHash.PrivateData.Values.LicenseUri | Should Be "https://github.com/cadayton/V1nom/blob/master/V1nom/license"
+        $ManifestHash.PrivateData.Values.LicenseUri | Should Be "https://github.com/cadayton/V1nom/blob/master/Venom/license"
     }
-    
+
     Pester\It 'has a valid project Uri' {
-        $ManifestHash.PrivateData.Values.ProjectUri | Should Be "https://github.com/cadayton/V1nom"
+        $ManifestHash.PrivateData.Values.ProjectUri | Should Be "https://github.com/cadayton/Venom"
     }
-    
+
     Pester\It "gallery tags don't contain spaces" {
         foreach ($Tag in $ManifestHash.PrivateData.Values.tags)
         {

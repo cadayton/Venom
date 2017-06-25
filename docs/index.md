@@ -2,11 +2,21 @@
 
 Collection of PowerShell scripts reporting on storage array inventory, capacity and performance data.
 
-The following scripts are being converted to be available through the **Venom module**.  A varity of access methods are used communicate with the storage arrays, including native CLI, REST API, and the SSH protocol.
+The listing of scripts below are is the process being converted to be cmdlets available through the **Venom module**.  A varity of access methods are used communicate with the storage arrays, including native CLI, REST API, and the SSH protocol.
 
 All the scripts are functioning today indivdually on Windows 10 and I'm going through the labor of coverting them to be available in **Venom module**.
 
-CmdLet | Description
+**Listing cmdlets currently available in the Venom module**
+
+cmdlet | Description
+------ | -----------
+Get-VeArrayInfo | Module implementation of Get-ArrayInfo.ps1
+Update-VeArrayInfo | Module implementation of Update-ArrayInfo.ps1
+
+***
+
+**Listing of scripts being converted to module cmdlets**
+Script | Description
 ------ | -----------
 Get-ArrayInfo  | Script for maintaining array inventory and capacity records in a XML DB.
 Update-ArrayInfo | Script for updating capacity details in the XML DB.
