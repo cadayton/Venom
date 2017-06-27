@@ -74,7 +74,7 @@
         $PSArray | Add-Member -MemberType NoteProperty -Name "T2 Full%" -Value $_.t2_percent_full
         $PSArray | Add-Member -MemberType NoteProperty -Name "T2 Subs%" -Value $_.t2_subs_percent
         $PSArray | Add-Member -MemberType NoteProperty -Name "Updated" -Value $_.LastUpdated
-        $PSArray | Add-Member -MemberType NoteProperty -Name "Unisphere" -Value $_.unisphere
+        $PSArray | Add-Member -MemberType NoteProperty -Name "RestAPI" -Value $_.restapi
         $PSArrays += $PSArray
       }
       # return an array of storage arrays
@@ -341,7 +341,7 @@
         $symm 			= $_.Model
         $symmSid 		= $_.sid;
         $symmsn 		= $_.sn;
-        $URIserver 	= $_.unisphere;
+        $URIserver 	= $_.restapi;
         $usrname		= $_.username;
         $URIport		= ":8443";
         $userver		= $URIserver + $URIport;

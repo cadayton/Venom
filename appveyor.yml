@@ -1,25 +1,32 @@
+#-------------------------------# 
+#   environment configuration   # 
+#-------------------------------# 
 version: 0.1.{build}
 
 skip_commits:
   message: /update readme.*|update Version.*|update docs.*|update appveyor.*/
 
 os: WMF 5
-
 install:
   - ps: Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop | Out-Null
   - ps: Install-Module -Name Pester, PSScriptAnalyzer, PlatyPS -Confirm:$false -Force -ErrorAction SilentlyContinue | Out-Null
   - ps: Install-Module -Name posh-git -Force -ErrorAction SilentlyContinue | Out-Null
-
-build: false
-
-build_script:
-  - ps: . ./build/build.ps1
-
-deploy_script:
-  - ps: . ./build/deploy.ps1
 
 environment:
   PSGallery_Api_Key:
     secure: x46YcevxX8H4vRAGR8G+4j8hWLMEzdHLPPddfCniu9KBhk16qew/E5IiP5Iw8NHm
   GitHubKey:
     secure: dk1CytMp3q6h/sDjB943EOCcvlNetD7Rqs/bDRxAJm25irQgt4a9nrP4LrEvtTCQ
+  build: false
+
+#-------------------------------# 
+#  build & test configuration   # 
+#-------------------------------# 
+build_script:
+  - ps: . ./build/build.ps1
+
+#-------------------------------# 
+#  deployment configuration     # 
+#-------------------------------# 
+deploy_script:
+  - ps: . ./build/deploy.ps1
