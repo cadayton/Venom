@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<feDirectorParam xmlns:ns2="http://www.emc.com/em/2012/07/univmax/restapi/common" xmlns="http://www.emc.com/em/2012/07/univmax/restapi/performance" xmlns:ns3="http://www.emc.com/em/2012/07/univmax/restapi/config">
+  <startDate>1474750800000</startDate>
+  <endDate>1474751400000</endDate>
+  <symmetrixId>000195701296</symmetrixId>
+  <directorId>FA-1E</directorId>
+  <dataFormat>Maximum</dataFormat>
+  <metrics>PercentBusy</metrics>
+  <metrics>HostIOs</metrics>
+  <metrics>ReadResponseTime</metrics>
+  <metrics>WriteResponseTime</metrics>
+  <metrics>HostMBs</metrics>
+  <metrics>QueueDepthUtilization</metrics>
+</feDirectorParam>

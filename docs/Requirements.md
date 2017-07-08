@@ -19,9 +19,22 @@ There is not any reason to run PowerShell in administrative to complete the rema
 
 Start the PowerShell again and verify the installed version of PowerShell.
 
-    PS> $PSVerstionTable
+    PS> $PSVersionTable
 
-You'll need to running version 5 or newer.
+You'll need to running PowerShell version 5 or newer. The module was tested with the following code levels.
+    
+    PS> $PSVersionTable
+
+    Name                           Value
+    ----                           -----
+    PSVersion                      5.1.15063.413
+    PSEdition                      Desktop
+    PSCompatibleVersions           {1.0, 2.0, 3.0, 4.0...}
+    BuildVersion                   10.0.15063.413
+    CLRVersion                     4.0.30319.42000
+    WSManStackVersion              3.0  
+    PSRemotingProtocolVersion      2.3
+    SerializationVersion           1.1.0.1
 
 ***
 # Install the Venom module
@@ -44,6 +57,13 @@ The other method of installing the script is to use the normal GitHub process of
 
 For Dell/EMC symmetric storage arrays support, the **Solution Enabler** product will need to be installed. This product contains the CLI commands used to communication with the storage arrays. Both local and remote symcli commands will work. Using the RESTAPI is the future direction that will be used to communication with Dell/EMC storage arrays.
 
+The **Venom** module was tested with the following **Solution Enalber** version.
+
+    PS> symcli
+    
+    Symmetrix Command Line Interface (SYMCLI) Version V8.3.0.6 (Edit Level: 2252)
+    built with SYMAPI Version V8.3.0.6 (Edit Level: 2252)
+
 ## PureStorage Arrays
 
     PS> Install-Module PureStoragePowerShellSDK -Scope currentuser
@@ -53,4 +73,16 @@ For Dell/EMC symmetric storage arrays support, the **Solution Enabler** product 
 Communication with other storage arrays and devices use either the RESTAPI or the SSH protocol for communications.
 
     PS> Install-Module Posh-SSH -Scope currentuser
+
+# Module Versions
+
+The following module versions where used in testing the **Venom** module.
+
+    PS> Get-Module
+
+ModuleType | Version | Name | ExportedCommands
+---------- | ------- | ---- | ----------------
+Manifest | 1.7.7 | Posh-SSH | {Get-SCPFile, Get-SCPFolder, Get-SFTPFile, New-SFTPSession...} 
+Binary | 1.7.4.0 | PureStoragePowerShellSDK | {Add-PfaHostGroupsToProtectionGroup, Add-PfaHostIqns...} 
+Script | 0.2.0 | Venom | {Get-VeArrayInfo, Get-VeSymmMetrics, Update-VeArrayInfo}
 

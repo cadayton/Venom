@@ -1,26 +1,39 @@
 ## Overview
 
-Collection of PowerShell scripts reporting on storage array inventory, capacity and performance data.
+Two fictitious Data Centers called the Snake and the Samish has a storage environment consisting of 97 storage arrays.  The SAN infrastructure consists of 78 director class fiber channel switches with over 24,000 host intiators and over 1,900 storage target ports. The SOS and Mojo organizations are the two primary tenants of the data centers. At any given time, there are about a million IOs in flight among the two data centers.
 
-The listing of scripts below are is the process being converted to be cmdlets available through the **Venom module**.  A varity of access methods are used communicate with the storage arrays, including native CLI, REST API, and the SSH protocol.
+The **Venom** module is a collection of PowerShell scripts that ease the burden of maintaining a storage infrastructure of this scale.  This module is designed for the storage engineer who is in the trenches and desires quick access to SAN information.
 
-All the scripts are functioning today indivdually on Windows 10 and I'm going through the labor of coverting them to be available in **Venom module**.
+Both PowerShell and this module are used daily for reporting on SAN inventory, capacity and performance data. A goal of the module is not to become the authoritive source for any SAN information but rather be a simple interface for presenting authoritive SAN information from various storage devices in real-time. Having quick access to key SAN information, allows the storage engineer to quickly identify potential issues and then launch the appropriate management tool for deeper analysis.
 
-**Listing cmdlets currently available in the Venom module**
+The listing of scripts below are in the process being converted to be cmdlets available through the **Venom** module.  A varity of access methods are used communicate with the storage devices, including native CLI, RESTAPI, and the SSH protocol.
 
-cmdlet | Description
------- | -----------
-Get-VeArrayInfo | Module implementation of Get-ArrayInfo.ps1
-Update-VeArrayInfo | Module implementation of Update-ArrayInfo.ps1
+All the scripts are functioning today indivdually on Windows 10 and I'm going through the labor of converting them to be available in **Venom** module.
+
+**cmdlets currently available in the Venom module**
+
+cmdlet | Description | Version | Date | Author
+-------| ----------- | ------- | ---- | -------
+Get-VeArrayInfo | Storage array inventory & capacity data. | 0.0.2.0 | 07/07/2017 | cadayton
+Update-VeArrayInfo | Updates capacity data for most storage arrays. | 0.0.2.0 | 07/07/2017 | cadayton
+Get-VeSymmMetrics | View various Symmetrix performance data. | 0.0.2.0 | 07/07/2017 | cadayton
+
+Some functionality of these cmdlets will not be available until all of the PowerShell scripts have been converted to module cmdlets.
+
+The module can be installed on either a Windows desktop for individual usage or centrally on a Windows server for centralized usage.
+
+After installing the module and the prerequisites, the **Get-VeArrayInfo** cmdlet needs to be executed to create the XMLDB files, located in the folder, **ArrayInfo**.  Both the folder and XMLDB files are created automatically upon the first execution.  I recommend using **Visual Studio Code** to update the XMLDB file to match your storage environment, but any ASCII editor will work too.  See the XMLDB documentation for further details.
+
+Since each of the cmdlets will depend upon a specific underlining folder structure, pick a common folder location where upon all cmdlets will be executed. Each cmdlet will automatically create the needed folders. See the individual cmdlet documentation for specific folder dependencies. Each cmdlet provides command line help and can be displayed by entering the following command for each cmdlet.
+
+    Get-Help Get-VeArrayInfo -full
 
 ***
 
-**Listing of scripts being converted to module cmdlets**
+**PowerShell scripts currently being converted to Venom module cmdlets**
+
 Script | Description
 ------ | -----------
-Get-ArrayInfo  | Script for maintaining array inventory and capacity records in a XML DB.
-Update-ArrayInfo | Script for updating capacity details in the XML DB.
-Get-ArrayMetrics   | Script for displaying various Dell/EMC symmetrix performance data via the RESTAPI.
 Get-PureMetrics | Script for displaying PureSystem array performance data via the RESTAPI.
 Get-VPlexMetrics | Reports on VPlex performance by downloading data via SSH and using RESTAPI.
 Get-SRDFInfo | Out-Gridview of all SRDF sessions in the xml DB file.

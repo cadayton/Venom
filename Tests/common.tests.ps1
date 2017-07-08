@@ -61,7 +61,7 @@ Pester\Describe "Manifest" {
     }
 
     Pester\It "has a valid version" {
-        $ManifestHash.ModuleVersion | Should Be $Version
+        $ManifestHash.ModuleVersion | Should Not BeNullOrEmpty
     }
 
     Pester\It "has a valid copyright" {

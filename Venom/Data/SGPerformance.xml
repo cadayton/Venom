@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<storageGroupParam xmlns:ns2="http://www.emc.com/em/2012/07/univmax/restapi/common" xmlns="http://www.emc.com/em/2012/07/univmax/restapi/performance" xmlns:ns3="http://www.emc.com/em/2012/07/univmax/restapi/config">
+  <startDate>1477054500000</startDate>
+  <endDate>1477058100000</endDate>
+  <symmetrixId>000195702533</symmetrixId>
+  <storageGroupId>pxesx271-278_sg</storageGroupId>
+  <dataFormat>Maximum</dataFormat>
+  <metrics>HostIOs</metrics>
+  <metrics>HostReads</metrics>
+  <metrics>HostWrites</metrics>
+  <metrics>HostMBs</metrics>
+  <metrics>HostMBReads</metrics>
+  <metrics>HostMBWritten</metrics>
+  <metrics>ResponseTime</metrics>
+  <metrics>ReadResponseTime</metrics>
+  <metrics>WriteResponseTime</metrics>
+  <metrics>PercentRead</metrics>
+  <metrics>PercentWrite</metrics>
+  <metrics>AvgIOSize</metrics>
+  <metrics>AvgReadSize</metrics>
+  <metrics>AvgWriteSize</metrics>
+</storageGroupParam>

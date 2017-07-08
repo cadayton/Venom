@@ -6,6 +6,7 @@
     <Monitor>0</Monitor>
     <remote>_PX038</remote>
     <restapi>sanmgmt01</restapi>
+    <domainname>unknown.org</domainname>
     <username>admin</username>
     <usage>General</usage>
     <sn>000292600699</sn>
@@ -31,6 +32,7 @@
     <Model>FA-m70</Model>
     <Monitor>0</Monitor>
     <remote>10.92.105.4</remote>
+    <domainname>unknown.org</domainname>
     <username>pureuser</username>
     <usage>General</usage>
     <sn>10</sn>
@@ -53,6 +55,7 @@
     <usage>ESX Only</usage>
     <sn>000197000700</sn>
     <restapi>bowvmx0700a</restapi>
+    <domainname>unknown.org</domainname>
     <username>admin</username>
     <restapi1>pxvmx0700-mgmt1</restapi1>
     <esrs0>bowvmx0700-esrs0</esrs0>
@@ -85,6 +88,8 @@
     <Model>VS2</Model>
     <Monitor>0</Monitor>
     <remote>10.10.10.10</remote>
+    <domainname>unknown.org</domainname>
+    <username></username>
     <usage>General</usage>
     <sn>00150600702</sn>
     <Rack>B231</Rack>
@@ -97,7 +102,7 @@
     <subs_percent>0</subs_percent>
     <LastUpdated>TBD</LastUpdated>
   </Array>
-  <Array sid="0701" location="Dusty" DataCenter="Snake" Org="Mojo">
+  <Array sid="0701" location="Hay" DataCenter="Snake" Org="Mojo">
     <Name>dusvmx0701</Name>
     <Class>Symmetrix</Class>
     <Model>VMAX3-250F</Model>
@@ -106,6 +111,7 @@
     <usage>General</usage>
     <sn>000197800398</sn>
     <restapi>pxvmx701a</restapi>
+    <domainname>unkown.org</domainname>
     <username>admin</username>
     <restapi1>dusvmx0701-mgmt1</restapi1>
     <esrs0>dusvmx0701-esrs0</esrs0>
@@ -131,12 +137,14 @@
     </t2_subs_percent>
     <LastUpdated>06/17/2017 17:21</LastUpdated>
   </Array>
-  <Array sid="0001" location="Dusty" DataCenter="Snake" Org="Mojo">
+  <Array sid="0001" location="Hay" DataCenter="Snake" Org="Mojo">
     <Name>dusifs0001</Name>
     <Class>IBM-Flash</Class>
     <Model>System 840</Model>
     <Monitor>0</Monitor>
     <remote>10.10.10.12</remote>
+    <domainname>unknown.org</domainname>
+    <username></username>
     <usage>All-Flash</usage>
     <sn>1321001-9843-AEZ</sn>
     <Rack>B231</Rack>
@@ -149,12 +157,14 @@
     <subs_percent>100</subs_percent>
     <LastUpdated>10/3/2016 08:05</LastUpdated>
   </Array>
-  <Array sid="0703" location="Bow" DataCenter="Snake" Org="Mojo">
+  <Array sid="0703" location="Hay" DataCenter="Snake" Org="Mojo">
     <Name>dusvnx0703</Name>
     <Class>VNX</Class>
     <Model>7600</Model>
     <Type>Block</Type>
     <remote>pxvnx2309</remote>
+    <domainname>unknown.org</domainname>
+    <username></username>
     <usage>NPE</usage>
     <sn>APM00145140703</sn>
     <SPA>10.10.10.10</SPA>

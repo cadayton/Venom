@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<arrayParam xmlns:ns2="http://www.emc.com/em/2012/07/univmax/restapi/common" xmlns="http://www.emc.com/em/2012/07/univmax/restapi/performance" xmlns:ns3="http://www.emc.com/em/2012/07/univmax/restapi/config">
+  <startDate>1477056000000</startDate>
+  <endDate>1477059600000</endDate>
+  <symmetrixId>000292600479</symmetrixId>
+  <dataFormat>Maximum</dataFormat>
+  <metrics>ReadResponseTime</metrics>
+  <metrics>WriteResponseTime</metrics>
+  <metrics>HostIOs</metrics>
+  <metrics>HostMBReads</metrics>
+  <metrics>HostMBWritten</metrics>
+  <metrics>PercentHit</metrics>
+  <metrics>PercentReads</metrics>
+</arrayParam>

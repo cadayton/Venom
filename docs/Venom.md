@@ -4,7 +4,7 @@ The cmdlets in the **Venom** module depend on a specific folder structure, so cr
 
     PS> New-Item -Patch C:\Venom -ItemType Directory
 
-A folder named, **ArrayInfo** will be created automatically and will contain a XML files named, **ArrayInfo-MM-dd-yyyy.xml**. These are the XML database containing storage array records.
+A folder named, **ArrayInfo** will be created automatically and will contain a XML files named, **ArrayInfo-MM-dd-yyyy.xml**. These are the XML database files containing storage array records.  At least two XMLDB files should always be present in this folder.
 
 Execute the following to create the folder and example XML databases.
 

@@ -1,21 +1,26 @@
-# Module Variables
+# Module Constants
 
-    $Script:AIDir   = "ArrayInfo"
-    $Script:CRDir   = "CredInfo"
-    $Script:AIPath  = "$PWD\$Script:AIDir"
-    $Script:CRPath  = "$PWD\$Script:CRDir"
-    $Script:usr     = $null
-    $Script:pw      = $null
+  # Global/Private constants are available to all nested modules
+  # These constants will be required by other nested modules & the Venom module
+  New-Variable -Name AIDir -Value "ArrayInfo"           -Option Constant -Scope Global -Visibility Private -Description "XMLDB folder name";
+  New-Variable -Name CRDir -Value "CredInfo"            -Option Constant -Scope Global -Visibility Private -Description "Credential folder name";
+  New-Variable -Name AIPath -Value "$PWD\$Global:AIDir" -Option Constant -Scope Global -Visibility Private -Description "XMLDB path";
+  New-Variable -Name CRPath -Value "$PWD\$Global:CRDir"  -Option Constant -Scope Global -Visibility Private -Description "Credential path";
+  
+  $Script:usr = $null
+  $Script:pw  = $null
+  $Script:org = $null
 
 #
 
 # Non-Exported Functions
 
-  # Security Functions
+  # Dot Sourced Functions
 
     . $PSScriptRoot\Local\Set-Ignore-SelfSignedCerts.ps1
     . $PSScriptRoot\Local\Export-PSCredentials.ps1
     . $PSScriptRoot\Local\Import-PSCredentials.ps1
+    . $PSScriptRoot\Local\Get-ArrayInfoXML.ps1
 
   #
 
@@ -171,17 +176,17 @@
     }
 
     function Add-ArrayInfoDB {
-      New-Item -Path $PWD\$Script:AIDir -ItemType Directory | Out-Null;
+      New-Item -Path $PWD\$Global:AIDir -ItemType Directory | Out-Null;
       $tod = Get-Date -Format "MM-dd-yyyy"
       $yed = (Get-Date).AddDays(-1)
       $yo1 = $yed.ToString("MM-dd-yyyy")
 
-      $basenm = "ArrayInfo"
-      $newfile = $Script:AIPath + "\" + $basenm + "-" + $tod + ".xml"
-      $oldfile = $Script:AIPath + "\" + $basenm + "-" + $yo1 + ".xml"
+      $basenm   = $Global:AIDir
+      $newfile  = $Global:AIPath + "\" + $basenm + "-" + $tod + ".xml"
+      $oldfile  = $Global:AIPath + "\" + $basenm + "-" + $yo1 + ".xml"
 
-      Copy-Item -Path $PSScriptRoot\ArrayInfo-Example.xml -Destination $newfile;
-      Copy-Item -Path $PSScriptRoot\ArrayInfo-Example.xml -Destination $oldfile;
+      Copy-Item -Path $PSScriptRoot\Data\ArrayInfo-Example.xml -Destination $newfile;
+      Copy-Item -Path $PSScriptRoot\Data\ArrayInfo-Example.xml -Destination $oldfile;
 
     }
   #
@@ -340,6 +345,7 @@
         $AIobj			= $_;
         $symm 			= $_.Model
         $symmSid 		= $_.sid;
+        $org        = $_.org
         $symmsn 		= $_.sn;
         $URIserver 	= $_.restapi;
         $usrname		= $_.username;
@@ -348,20 +354,22 @@
 
         Write-Host "Processing $symm : $symmSid via RESTAPI to $URIServer" -ForegroundColor Green;
 
-        if ($Script:usr -eq $null) {  # assume same credentials for all Unisphere servers
-          if (!(Test-Path $Script:CRPath)) {
-            New-Item $Script:CRPath -ItemType Directory
-          }
-          $credfilename = $Script:CRPath + "\" + $usrname + "-" + $env:COMPUTERNAME + $credExt;
-          Write-Verbose "Unisphere Credentials : $credfilename";
+        if ($Script:org -ne $org ) {  # assume same credentials for all Unisphere servers in Org
+          $Script:org = $org;
 
-          if (!(Test-Path $credfilename)) { # create cache credential
-            Export-PSCredential $usrname $credfilename
+          $credBase = "-" + $org + "-" + $env:COMPUTERNAME + $credExt;
+          $Script:credfilename = $Global:CRPath + "\" + $usrname + $credBase;
+          
+          if (!(Test-Path $Script:credfilename)) { # create cache credential
+            Write-Host "Unisphere Credentials require for $org Storage" -ForegroundColor Green
+            Export-PSCredential $usrname $credBase
             Start-Sleep 3;
           }
-          $cred = Import-PSCredential $credfilename
+
+          $cred = Import-PSCredential $Script:credfilename
           $Script:usr = $cred.UserName;
           $Script:pw  = $cred.GetNetworkCredential().Password;
+          
         }
 
         $EUP = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $Script:usr,$Script:pw)))
@@ -490,15 +498,31 @@
 
     function Update-Pure-ArrayInfo {
       begin {
-        $Account = "pureuser";
-        $credfilename = $Script:CRPath + "\" + $Account + "-" + $env:COMPUTERNAME + $credExt;
-        Write-Verbose "Pure Credentials : $credfilename";
 
-        if (!(Test-Path $credfilename)) { # create cache credential
-          Export-PSCredential $Account $credfilename
+        $xmlDB = Get-ArrayInfoXML;
+
+        if ($Script:org -eq $null) { # org value from first record since none specified
+          $unique = $xmlDB.SelectNodes("//Array") |
+            Where-Object { $_.Class -match "Pure"} |
+            Select-Object -Property Org, username, domainname -Unique;
+            $Script:org = $unique[0].Org;
+          
+        } else {
+          $unique = $xmlDB.SelectNodes("//Array") |
+            Where-Object { $_.Class -match "Pure" -and $_.Org -match $Script:org} |
+            Select-Object -Property Org, username, domainname -Unique;
+        }
+        
+        $usrname = $unique[0].username;
+        $credBase = "-" + $Script:org + "-" + $env:COMPUTERNAME + $credExt;
+        $Script:credfilename = $Global:CRPath + "\" + $usrname + $credBase;
+        Write-Verbose "Pure Credentials : $Script:credfilename";
+
+        if (!(Test-Path $Script:credfilename)) { # create cache credential
+          Export-PSCredential $usrname $credBase
           Start-Sleep 3;
         }
-        $cred = Import-PSCredential $credfilename
+        $cred = Import-PSCredential $Script:credfilename
       }
 
       process {
@@ -580,30 +604,32 @@
           Displays a Out-Gridview of the array capacity metrics.
 
       .EXAMPLE
-          Get-ArrayInfo            # Out-GridView of all arrays
+        Get-VeArrayInfo            # Out-GridView of all arrays
 
-          If multiple options are specified, only first one is processed.
-
-      .EXAMPLE
-          Get-ArrayInfo -vnx       # Out-GridView of all VNX arrays
+        If multiple options are specified, only first one is processed.
 
       .EXAMPLE
-          Get-ArrayInfo.ps1 -vnx -vmax 	# 2nd option is ignored.
+        Get-VeArrayInfo -vnx       # Out-GridView of all VNX arrays
 
       .EXAMPLE
-          Get-ArrayInfo.px1 -trend     # Trend Report for selected VMAX arrays.
+          Get-VeArrayInfo -vnx -vmax 	# 2nd option is ignored.
+
+      .EXAMPLE
+          Get-VeArrayInfo -trend     # Trend Report for selected VMAX arrays.
 
           An Out-Gridview of all VMAX arrays is presented for selection of one or more VMAX arrays.
 
       .NOTES
           Author: Craig Dayton
+          0.0.2.0: 07/07/2017 : cadayton : converted to Venom module.
           Updated: 11/31/2016 Added integration with Get-Pure-Metrics.ps1
           Updated: 10/17/2016 added integration with Get-Array-Metrics.ps1
-                                                  and Get-VPlex-Metrics.ps1.
 
       .LINK
           https://github.com/cadayton/Venom
-
+      
+      .LINK
+          http://venom.readthedocs.io
   #>
 
   function Get-VeArrayInfo  {
@@ -636,13 +662,13 @@
 
     # Main Routine
 
-      if (!(Test-Path $Script:AIDir)) { Add-ArrayInfoDB }
+      if (!(Test-Path $Global:AIDir)) { Add-ArrayInfoDB }
 
-      $AIFile = Get-ChildItem -Path $Script:AIPath |
+      $AIFile = Get-ChildItem -Path $Global:AIPath |
           Where-Object {$_.PSChildName -like "ArrayInfo*.xml"} |
           Sort-object -property @{Expression={$_.LastWriteTime}; Ascending=$false};
 
-      $FileIn = $Script:AIPath + "\" + $AIFile.PSChildName[0];
+      $FileIn = $Global:AIPath + "\" + $AIFile.PSChildName[0];
 
       $doc = new-object "System.Xml.XmlDocument"
       $doc.Load($FileIn)
@@ -681,11 +707,11 @@
                   Out-GridView -Title $title -OutputMode Single
               if ($report -ne $null) {
                   $selsid = $report.sid;
-                  $unisphere = $report.Unisphere
+                  $unisphere = $report.restapi
                   Write-Host "Display Performance Reports for VMAX $selsid (Y or N)?" -NoNewline -ForegroundColor Green
                   [string]$resp = Read-Host;
                   if ($resp -match "Y") {
-                      .\Get-Array-Metrics.ps1 $unisphere $selsid
+                      Get-VeSymmMetrics $unisphere $selsid
                   };
               }
             }
@@ -698,7 +724,7 @@
               $vplex = $report.Array
               Write-Host "Display $rptType Performance metrics for $vplex (Y or N)?" -NoNewline -ForegroundColor Green
               [string]$resp = Read-Host;
-              if (($resp -match "Y") -and ($report -ne $null)) { .\Get-VPlex-Metrics.ps1 $vplex  }
+              if (($resp -match "Y") -and ($report -ne $null)) { Get-VeVPlexMetrics $vplex  }
             }
             "Pure" {
               $title = "List of PureSystem storage arrays";
@@ -709,7 +735,7 @@
               $pure = $report.Array
               Write-Host "Display $rptType Performance metrics(Y or N)?" -NoNewline -ForegroundColor Green
               [string]$resp = Read-Host;
-              if (($resp -match "Y") -and ($report -ne $null)) { .\Get-Pure-Metrics.ps1 }
+              if (($resp -match "Y") -and ($report -ne $null)) { Get-VePureMetrics }
             }
             "IBM" {
               $title = "List of Fraud IBM storage arrays";
@@ -739,7 +765,7 @@
           if ($resp -match "N") { $rptloop = $false };
 
           # if ($report -ne $null) { Performance-Report $report }
-          #if ($report -ne $null) { .\Get-VPlex-Metrics.ps1 }
+          #if ($report -ne $null) { Get-VeVPlexMetrics }
         }
       }
 
@@ -764,6 +790,7 @@
 
     .PARAMETER offline
       Process against an offline copy of the symapi_db.bin
+      NOT IMPLEMENTED in module version of the cmdlet.
 
     .PARAMETER hostnm
       Host name of where the symcli commands will be executed.
@@ -782,13 +809,6 @@
 
       If it is desired to use the symcli, then the value should be a
       name listed in the netcfg file to reference the symcli hostnm.
-
-    .PARAMETER acct
-      Defaults to using current the Windows login credentials.
-      Account name to establish SSH session with Unix host.
-
-      The account used for Unisphere RESTAPI login is specified
-      in the ArrayInfo input file.
 
     .INPUTS
       /ArrayInfo/ArrayInfo-MM-DD-YYYY.xml
@@ -822,6 +842,7 @@
       Install-Module -Name PureStoragePowerShellSDK
 
       Author: Craig Dayton
+      0.0.2.0: 07/07/2017 : cadayton : converted to Venom module.
       Updated: 01/05/2016 - Added support for Unisphere RESTAPI
       Updated: 10/29/2016 - Added Support for Pure Arrays
       Updated: 08/24/2015 - Initial Release
@@ -849,11 +870,7 @@
           [Parameter(Position=2,
             Mandatory=$false,
             ValueFromPipeline=$True)]
-          [string]$netcfgnm = "restapi",
-          [Parameter(Position=3,
-            Mandatory=$false,
-            ValueFromPipeline=$True)]
-          [string]$acct = $env:USERNAME
+          [string]$netcfgnm = "restapi"
         )
 
     #
@@ -873,10 +890,10 @@
         $cShare = "\\my.share.org\scratch"
         $cName  = "AI"
         New-PSDrive -name $cName -psprovider filesystem -Root $cShare | Out-Null
-        $NetPath = $cName + ":\$Script:AIDir";
+        $NetPath = $cName + ":\$Global:AIDir";
       #>
 
-      $AIFile = Get-ChildItem -Path $Script:AIPath |
+      $AIFile = Get-ChildItem -Path $Global:AIPath |
         Where-Object {$_.PSChildName -like "ArrayInfo*.xml"} |
         Sort-object -property @{Expression={$_.LastWriteTime}; Ascending=$false};
 
@@ -884,6 +901,8 @@
       $basenm,$x = $FileIn.split("-")
       $tod = Get-Date -Format "MM-dd-yyyy"
       $newfile = $basenm + "-" + $tod + ".xml"
+
+      $Script:org = $org;
 
       if ((Test-Path $FileIn)) { # input file exist?
         $doc = new-object "System.Xml.XmlDocument"

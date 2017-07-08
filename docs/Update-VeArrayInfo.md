@@ -30,4 +30,4 @@ the array password will appear on the PowerShell console. The account name used 
 After the updating process has been completed, the new capacity metrics can be viewed by executing,
 **Get-VeArrayInfo**.
 
-    PS> .\Get-VeArrayInfo
+    PS> Get-VeArrayInfo

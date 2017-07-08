@@ -12,7 +12,7 @@
 RootModule = 'Venom.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.9'
+ModuleVersion = '0.2.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -66,10 +66,10 @@ Description = 'SAN Automation with Powershell'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+NestedModules = @('SymmMetrics.psm1','Progress.psm1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Get-VeArrayInfo','Update-VeArrayInfo')
+FunctionsToExport = @('Get-VeArrayInfo','Update-VeArrayInfo','Get-VeSymmMetrics')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -99,10 +99,10 @@ PrivateData = @{
         # Tags = @()
 
         # A URL to the license for this module.
-        # LicenseUri = 'https://github.com/cadayton/Venom/blob/master/LICENSE'
+        LicenseUri = 'https://github.com/cadayton/Venom/blob/master/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = 'https://github.com/cadayton/Venom'
+        ProjectUri = 'https://github.com/cadayton/Venom'
 
         # A URL to an icon representing this module.
         # IconUri = ''
