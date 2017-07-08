@@ -15,9 +15,11 @@ function Export-PSCredential {
   $export.PSObject.TypeNames.Insert(0,'ExportedPSCredential')
   $export.Username = $Credential.Username
   $export.EncryptedPassword = $Credential.Password | ConvertFrom-SecureString
-  $export | Export-Clixml $Path
-  #Write-Host -foregroundcolor Green "Created: $Path" -noNewLine
-  Write-Host -foregroundcolor Green "Created: $Path"
-  # Return FileInfo object referring to saved credentials
-  #Get-Item $Path
+  if (!(Test-Path $Global:CRDir)) {
+    New-Item $Global:CRDir -ItemType Directory
+  }
+  $Script:credfilename = $Global:CRPath + "\" + $Credential.Username + $Path;
+  $export | Export-Clixml $Script:credfilename;
+  Write-Host -foregroundcolor Yellow "Created:$Script:credfilename"
+
 }

@@ -6,7 +6,7 @@ Launch a PowerShell console from the configured folder and enter the following c
 
 [![ArrayInfo](images/ArrayCapacityReport.png)](images/ArrayCapacityReport.png)
 
-**Click** on the desired row and click on **'OK'** button.
+**Click** on the desired row(s) and click on **'OK'** button.
 
 A dialog similar to the following will be displayed.
 
@@ -28,7 +28,7 @@ Clicking on the **'Cancel'** button will close the dialog and return to the Powe
 
 Enter **'N' or 'No'** to return to the PowerShell console prompt.
 
-See **Get-VeArrayMetrics**, **Get-VePureMetrics**, or **Get-VeVPlexMetrics** for information on array performance reports.
+See **Get-VeSymmMetrics**, **Get-VePureMetrics**, or **Get-VeVPlexMetrics** for information on array performance reports.
 
 ***
 
