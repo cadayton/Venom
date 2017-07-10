@@ -339,6 +339,7 @@
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
         # tell Windows to ignore self-signed certs
         Set-Ignore-SelfSignedCerts;
+        $cred = $null;
       }
 
       process {
@@ -354,14 +355,13 @@
 
         Write-Host "Processing $symm : $symmSid via RESTAPI to $URIServer" -ForegroundColor Green;
 
-        if ($Script:org -ne $org ) {  # assume same credentials for all Unisphere servers in Org
-          $Script:org = $org;
+        if ([string]::IsNullOrEmpty($cred)) {  # assume same credentials for all Unisphere servers in Org
 
-          $credBase = "-" + $org + "-" + $env:COMPUTERNAME + $credExt;
+          $credBase = "-" + $Script:org + "-" + $env:COMPUTERNAME + $credExt;
           $Script:credfilename = $Global:CRPath + "\" + $usrname + $credBase;
           
           if (!(Test-Path $Script:credfilename)) { # create cache credential
-            Write-Host "Unisphere Credentials require for $org Storage" -ForegroundColor Green
+            Write-Host "Unisphere Credentials require for $Script:org Storage" -ForegroundColor Green
             Export-PSCredential $usrname $credBase
             Start-Sleep 3;
           }
@@ -778,19 +778,12 @@
       By default, the Unisphere RESTAPI is called to collect capacity
       metrics for each of the symmetrix arrays.
 
-      Can query either an online (local or remote) or an offline
-      copy of the symapi database and updates capacity metrics.
-
       PureSystem's PureStoragePowerShellSDK is used update
       Pure Storage arrays.
 
     .DESCRIPTION
-      The most recent XML file titled, ArrayInfo-MM-DD-YYYY.xml within the
+      The most recent XMLDB file titled, ArrayInfo-MM-DD-YYYY.xml within the
       sub-directory, ArrayInfo is loaded as input.
-
-    .PARAMETER offline
-      Process against an offline copy of the symapi_db.bin
-      NOT IMPLEMENTED in module version of the cmdlet.
 
     .PARAMETER hostnm
       Host name of where the symcli commands will be executed.
@@ -810,6 +803,12 @@
       If it is desired to use the symcli, then the value should be a
       name listed in the netcfg file to reference the symcli hostnm.
 
+    .PARAMETER org
+      Limit the update to a specific organization value in the XMLDB.
+
+      By default, the update will be limited organization of the first
+      record in the XMLDB.
+
     .INPUTS
       /ArrayInfo/ArrayInfo-MM-DD-YYYY.xml
 
@@ -817,24 +816,22 @@
       A new file as /ArrayInfo/ArrayInfo-MM-DD-YYYY.xml
 
     .EXAMPLE
-      Update-ArrayInfo
+      Update-VeArrayInfo
 
       The RESTAPI is used to update capacity metrics in the new ArrayInfo file.
 
-      Get-ArrayInfo.ps1 is used to display the array information using the
+      Get-VeArrayInfo.ps1 is used to display the array information using the
       Out-GridView feature within PowerShell.
 
-    .EXAMPLE
-      Update-ArrayInfo -netcfgnm _PX038
+      By default the updates are limited to organization of the first record
+      found in the XMLDB.
 
-      The netcfg entry referenced by _PX038 is used for remote symcli execution.
+    .EXAMPLE
+      Update-VeArrayInfo -org Mojo
+
+      Limits updates to the records in the Mojo organization.
 
     .NOTES
-      Must have the POSH-SSH module installed for processing
-      of an offline copy of the symapi database from a Unix host.
-
-      Execute the following command to install POSH-SSH module
-      iex (New-Object Net.WebClient).DownloadString("https://gist.github.com/darkoperator/6152630/raw/c67de4f7cd780ba367cccbc2593f38d18ce6df89/instposhsshdev")
 
       Must have PureStoragePowerShellSDK installed to support Pure arrays.
 
@@ -842,6 +839,7 @@
       Install-Module -Name PureStoragePowerShellSDK
 
       Author: Craig Dayton
+      0.0.2.1: 07/09/2017 : cadayton : Added 'org' parameter for selection of specific records.
       0.0.2.0: 07/07/2017 : cadayton : converted to Venom module.
       Updated: 01/05/2016 - Added support for Unisphere RESTAPI
       Updated: 10/29/2016 - Added Support for Pure Arrays
@@ -849,6 +847,11 @@
 
     .LINK
       https://github.com/cadayton/Venom
+    
+    .LINK
+      http://venom.readthedocs.io
+
+    
 
   #>
   function Update-VeArrayInfo {
@@ -862,15 +865,15 @@
           [Parameter(Position=0,
             Mandatory=$false,
             ValueFromPipeline=$True)]
-          [bool]$offline = $false,
+          [string]$hostnm = "smcmgmt01",
           [Parameter(Position=1,
             Mandatory=$false,
             ValueFromPipeline=$True)]
-          [string]$hostnm = "admassan38",
+          [string]$netcfgnm = "restapi",
           [Parameter(Position=2,
             Mandatory=$false,
             ValueFromPipeline=$True)]
-          [string]$netcfgnm = "restapi"
+          [string]$org= $null
         )
 
     #
@@ -893,6 +896,8 @@
         $NetPath = $cName + ":\$Global:AIDir";
       #>
 
+      Write-Host "Running version 0.0.2.1" -ForegroundColor Green
+
       $AIFile = Get-ChildItem -Path $Global:AIPath |
         Where-Object {$_.PSChildName -like "ArrayInfo*.xml"} |
         Sort-object -property @{Expression={$_.LastWriteTime}; Ascending=$false};
@@ -908,13 +913,41 @@
         $doc = new-object "System.Xml.XmlDocument"
         $doc.Load($FileIn)
 
+        # Set or Validate the 'org' value to use for the updates.
+
+          if ([string]::IsNullOrEmpty($org)) { # org value not specified, so set it
+            $unique = $doc.SelectNodes("//Array") |
+              Where-Object { $_.Model -match "VMAX"} |
+              Select-Object -Property Org, username, domainname -Unique;
+              $Script:org = $unique[0].Org
+          } else {
+            $unique = $doc.SelectNodes("//Array") |
+              Where-Object { $_.Model -match "VMAX" -and $_.Org -match $org} |
+              Select-Object -Property Org, username, domainname -Unique;
+
+            if ($unique -is [Object]) { # Valid org value specified
+              $Script:org = $org
+            } else {
+              Write-Host "The org value " -ForegroundColor Blue -NoNewline
+              Write-Host $org -ForegroundColor Red -NoNewline
+              Write-Host " was not found in the XMLDB" -ForegroundColor Blue;
+              Write-Host "Check your spelling. The valid org values are:" -ForegroundColor Green;
+              $unique = $doc.SelectNodes("//Array") |
+                Where-Object { $_.Model -match "VMAX"} |
+                Select-Object -Property Org -Unique;
+              $unique;
+              return $null;
+            }
+          }
+        #
+
         if ($netcfgnm -match "restapi") {
-          $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Symmetrix" -and $_.Org -match "EIT"} | Update-Symm-ArrayInfo1
+          $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Symmetrix" -and $_.Org -match $Script:org} | Update-Symm-ArrayInfo1
         } else {
-          $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Symmetrix" -and $_.Org -match "EIT"} | Update-Symm-ArrayInfo
+          $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Symmetrix" -and $_.Org -match $Script:org} | Update-Symm-ArrayInfo
         }
 
-        $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Pure" -and $_.Org -match "EIT"} | Update-Pure-ArrayInfo
+        $doc.SelectNodes("//Array") | Where-Object {$_.Class -match "Pure" -and $_.Org -match $Script:org} | Update-Pure-ArrayInfo
 
         # need to generate new xml file ArrayInfo-dd-mm-yyyy.xml
         $doc.Save($newfile);
