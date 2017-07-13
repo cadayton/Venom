@@ -11,3 +11,4 @@ pages:
     - Get-VeArrayInfo: Get-VeArrayInfo.md
     - Update-VeArrayInfo: Update-VeArrayInfo.md
     - Get-VeSymmMetrics: Get-VeSymmMetrics.md
+    - Get-VePureMetrics: Get-VePureMetrics.md
