@@ -7,8 +7,17 @@ pages:
     - Requirements: Requirements.md
     - Venom Setup: Venom.md
     - XMLDB Setup: XMLDB.md
-  - CommandLets:
+  - Array cmdlets:
     - Get-VeArrayInfo: Get-VeArrayInfo.md
     - Update-VeArrayInfo: Update-VeArrayInfo.md
-    - Get-VeSymmMetrics: Get-VeSymmMetrics.md
+  - Cisco cmdlets:
+    - Cisco Module: Cisco-Module.md
+    - Set-VeDeviceAlias: Set-VeDeviceAlias.md
+    - Connect-VeFabric: Connect-VeFabric.md
+    - Update-VeFlogi: Update-VeFlogi.md
+    - Enable-VePorts: Enable-VePorts.md
+  - Pure Storage cmdlets:
     - Get-VePureMetrics: Get-VePureMetrics.md
+  - Symmetrix cmdlets:
+    - Get-VeSymmMetrics: Get-VeSymmMetrics.md
+  - Support: Support.md
