@@ -102,6 +102,12 @@
     <subs_percent>0</subs_percent>
     <LastUpdated>TBD</LastUpdated>
   </Array>
+  <Fabric switchID="mdsSOS01" fabric="SOS_Fabric_A" location="Bow" DataCenter="Samish" Org="SOS">
+    <username>admin</username>
+  </Fabric>
+  <Fabric switchID="mdsSOS02" fabric="SOS_Fabric_B" location="Bow" DataCenter="Samish" Org="SOS">
+    <username></username>
+  </Fabric>
   <Array sid="0701" location="Hay" DataCenter="Snake" Org="Mojo">
     <Name>dusvmx0701</Name>
     <Class>Symmetrix</Class>
@@ -193,4 +199,10 @@
     </t2_subs_percent>
     <LastUpdated>02/23/2017 08:00</LastUpdated>
   </Array>
+  <Fabric switchID="mdsMojo01" fabric="Mojo_Fabric_A" location="Hay" DataCenter="Snake" Org="Mojo">
+    <username></username>
+  </Fabric>
+  <Fabric switchID="mdsMojo02" fabric="Mojo_Fabric_B" location="Hay" DataCenter="Snake" Org="Mojo">
+    <username></username>
+  </Fabric>
 </arraylist>

@@ -6,12 +6,12 @@
 
   # Global/Private constants are available to all nested modules
   # These constants will be required by other nested modules & the Symm module
-  New-Variable -Name SGDir -Value "SGInfo"              -Option Constant -Scope Global -Visibility Private -Description "SG folder";
-  New-Variable -Name FADir -Value "FAInfo"              -Option Constant -Scope Global -Visibility Private -Description "FA folder";
-  New-Variable -Name MEDir -Value "MetInfo"             -Option Constant -Scope Global -Visibility Private -Description "Symm Metrics folder";
-  New-Variable -Name SGPath -Value "$PWD\$Global:SGDir" -Option Constant -Scope Global -Visibility Private -Description "SG path";
-  New-Variable -Name FAPath -Value "$PWD\$Global:FADir" -Option Constant -Scope Global -Visibility Private -Description "FA path";
-  New-Variable -Name MEPath -Value "$PWD\$Global:MEDir" -Option Constant -Scope Global -Visibility Private -Description "Symm Metrics path";
+  Set-Variable -Name SGDir -Value "SGInfo"              -Option Constant -Scope Global -Visibility Private -Description "SG folder";
+  Set-Variable -Name FADir -Value "FAInfo"              -Option Constant -Scope Global -Visibility Private -Description "FA folder";
+  Set-Variable -Name MEDir -Value "MetInfo"             -Option Constant -Scope Global -Visibility Private -Description "Symm Metrics folder";
+  Set-Variable -Name SGPath -Value "$PWD\$Global:SGDir" -Option Constant -Scope Global -Visibility Private -Description "SG path";
+  Set-Variable -Name FAPath -Value "$PWD\$Global:FADir" -Option Constant -Scope Global -Visibility Private -Description "FA path";
+  Set-Variable -Name MEPath -Value "$PWD\$Global:MEDir" -Option Constant -Scope Global -Visibility Private -Description "Symm Metrics path";
   
   $Script:PureMetricsCSV	= "PureMetrics.csv";
   $Script:SymmMetricsCSV  = "SymmMetrics.csv";
@@ -21,7 +21,7 @@
   $Script:org = $null;
   $Script:DomainName = $null;
 
-  New-Variable -Name credExt -Value ".enc.xml" -Option Constant -Scope Script;
+  Set-Variable -Name credExt -Value ".enc.xml" -Option Constant -Scope Script;
 
 #
 
@@ -1760,6 +1760,8 @@
         )
 
     #
+
+    Write-Host "Get-VeSymmMetrics version 0.0.2.0" -ForegroundColor Green
 
     $EUP      = Get-OrgCredentials $org;
     $Headers  = @{'Authorization'="Basic $($EUP)";'Content-type'='application/xml';'Accept'='application/xml'}

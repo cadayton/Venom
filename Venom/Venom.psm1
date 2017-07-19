@@ -2,10 +2,10 @@
 
   # Global/Private constants are available to all nested modules
   # These constants will be required by other nested modules & the Venom module
-  New-Variable -Name AIDir -Value "ArrayInfo"           -Option Constant -Scope Global -Visibility Private -Description "XMLDB folder name";
-  New-Variable -Name CRDir -Value "CredInfo"            -Option Constant -Scope Global -Visibility Private -Description "Credential folder name";
-  New-Variable -Name AIPath -Value "$PWD\$Global:AIDir" -Option Constant -Scope Global -Visibility Private -Description "XMLDB path";
-  New-Variable -Name CRPath -Value "$PWD\$Global:CRDir"  -Option Constant -Scope Global -Visibility Private -Description "Credential path";
+  Set-Variable -Name AIDir -Value "ArrayInfo"           -Option Constant -Scope Global -Visibility Private -Description "XMLDB folder name";
+  Set-Variable -Name CRDir -Value "CredInfo"            -Option Constant -Scope Global -Visibility Private -Description "Credential folder name";
+  Set-Variable -Name AIPath -Value "$PWD\$Global:AIDir" -Option Constant -Scope Global -Visibility Private -Description "XMLDB path";
+  Set-Variable -Name CRPath -Value "$PWD\$Global:CRDir"  -Option Constant -Scope Global -Visibility Private -Description "Credential path";
   
   $Script:usr = $null
   $Script:pw  = $null
@@ -662,6 +662,8 @@
 
     # Main Routine
 
+      Write-Host "Get-VeArrayInfo version 0.0.2.0" -ForegroundColor Green
+
       if (!(Test-Path $Global:AIDir)) { Add-ArrayInfoDB }
 
       $AIFile = Get-ChildItem -Path $Global:AIPath |
@@ -896,7 +898,7 @@
         $NetPath = $cName + ":\$Global:AIDir";
       #>
 
-      Write-Host "Running version 0.0.2.1" -ForegroundColor Green
+      Write-Host "Update-VeArrayInfo version 0.0.2.1" -ForegroundColor Green
 
       $AIFile = Get-ChildItem -Path $Global:AIPath |
         Where-Object {$_.PSChildName -like "ArrayInfo*.xml"} |

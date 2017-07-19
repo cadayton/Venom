@@ -15,8 +15,13 @@ All the scripts are functioning today indivdually on Windows 10 and I'm going th
 cmdlet | Description | Version | Date | Author
 -------| ----------- | ------- | ---- | -------
 Get-VeArrayInfo | Storage array inventory & capacity data. | 0.0.2.0 | 07/07/2017 | cadayton
-Update-VeArrayInfo | Updates capacity data for most storage arrays. | 0.0.2.0 | 07/07/2017 | cadayton
+Update-VeArrayInfo | Updates capacity data for most storage arrays. | 0.0.2.1 | 07/10/2017 | cadayton
 Get-VeSymmMetrics | View various Symmetrix performance data. | 0.0.2.0 | 07/07/2017 | cadayton
+Get-VePureMetrics | View various Pure Storage performance data | 0.0.2.0 | 07/10/2017 | cadayton
+Set-VeDeviceAlias | Automates setting Cisco device-aliases | 0.0.2.0 | 07/16/2017 | cadayton
+Connect-VeFabric | Discovers Cisco Fabric Domains | 0.0.2.0 | 07/16/2017 | cadayton
+Update-VeFlogi | Maintain Cisco switch flogi entries | 0.0.2.0 | 07/16/2017 | cadayton
+Enable-VePorts | Automates enabling of Cisco ports | 0.0.2.0 | 07/16/2017 | cadayton
 
 Some functionality of these cmdlets will not be available until all of the PowerShell scripts have been converted to module cmdlets.
 
@@ -34,11 +39,9 @@ Since each of the cmdlets will depend upon a specific underlining folder structu
 
 Script | Description
 ------ | -----------
-Get-PureMetrics | Script for displaying PureSystem array performance data via the RESTAPI.
 Get-VPlexMetrics | Reports on VPlex performance by downloading data via SSH and using RESTAPI.
 Get-SRDFInfo | Out-Gridview of all SRDF sessions in the xml DB file.
 Update-SRDFInfo | Builds inventory of SRDF sessions and creates devicefile for each SRDF Session.
 Get-ArrayLogin | List initiators logged into storage arrays based on specified search criteria.
 Get-SANInfo | Display of ISL and Port-Channels in the Cisco SAN Fabrics.
-Set-DeviceAlias | Creates device-aliases on Cisco SAN fabric for initiators and optionally targets missing a device-alias assignment. Or can enable specific switch port(S) and assign a VSAN value and a port description
 Set-SymmAlias | Creates Symmetrix alias for each initiator logged into a FA port. Or records the login entries to a csv file and reports on the csv file entries in a Out-GridView.
