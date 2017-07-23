@@ -1440,9 +1440,9 @@
         Get-ChildItem $Script:SwOrgPath |
           Where-Object { $_.Attributes -eq "Directory"} |
           ForEach-Object { # Processing flogi for each folder in C:\bin\ps\SWInfo-<org>
-            $FBPath = $_.PSPath;
+            $Script:FBPath = $_.PSPath;
             $fname = $_.PSChildname + ".csv";
-            $csvFile = $FBPath + "\" + $fname;
+            $csvFile = $Script:FBPath + "\" + $fname;
             Import-CSV -Path $csvFile -Header $peerHeader | Get-Flogi-Details
           }
       } else { # flogi csv for a specific fabric

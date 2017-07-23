@@ -30,7 +30,10 @@ contains a sub-folder named, Archive for historical tracking of changes.
 
 # Workflow
 
-The typical work is to execute the following sequence of cmdlets on schedule that is appropriate.
+In the module directory 'local', is some code called **Start-WeeklyUpdates.ps1**.  This is an
+example of the order of execution as well as a way to batch processs all of the cmdlets together.
+
+The typical workflow is to execute the following sequence of cmdlets on schedule that is appropriate.
 
     Set-VeDeviceAlias -FabricName SOS_Fabric_A
 
@@ -39,7 +42,9 @@ SAN Fabric folder.  Review the alias command file to ensure the device-alias nam
 
 Apply the device-aliases to the SAN Fabric.
 
-    Set-VeDeviceAlias -FabricName SOS_Fabric_a -apply
+    Set-VeDeviceAlias -FabricName SOS_Fabric_A -apply
 
-The alias command in each of the files is then executed and the command files are moved to the
+The alias command in each of the cmd files is then executed and the command files are moved to the
 archive folder.
+
+    Update-VeFlogi -FabricName SOS_Fabric_A

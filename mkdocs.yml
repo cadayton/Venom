@@ -20,4 +20,7 @@ pages:
     - Get-VePureMetrics: Get-VePureMetrics.md
   - Symmetrix cmdlets:
     - Get-VeSymmMetrics: Get-VeSymmMetrics.md
+    - Set-VeSymmLogin: Set-VeSymmLogin.md
+    - Find-VeSymmLogins: Find-VeSymmLogin.md
+    - Symm Management: Start-SymmMgmt.md
   - Support: Support.md

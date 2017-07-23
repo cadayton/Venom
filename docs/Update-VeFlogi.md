@@ -20,6 +20,9 @@ to easily identify any WWNs failing to log back into the switch.
 
 # Workflow
 
+In the module directory 'local', is some code called **Start-WeeklyUpdates.ps1**.  This is an
+example of the order of execution as well as a way to batch processs all of the cmdlets together.
+
 The typical workflow is to execute this cmdlet at least daily. 
 
     Update-VeFlogi -FabricName SOS_Fabric_A
