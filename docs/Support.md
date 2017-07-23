@@ -20,7 +20,10 @@ making a donation to help the motivation.
 Thanks To | Contribution
 ------ | ------------
 My Wife | For allowing me to ignore her for awhile
+cperez | Creation of the Posh-SSH module
 Staffan Gustafsson | Creation of the Progress Bar Class
+Pure Storage | For the PureStoragePowerShellSDK module
+Dell/EMC | For the Symmetrix RESTAPI
 T-Mobile | For putting up with me
 
 ***
