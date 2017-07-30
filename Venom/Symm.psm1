@@ -8,6 +8,8 @@
 # Non-Exported Functions
 
   . $PSScriptRoot\Local\Get-ArrayInfoXML.ps1
+  . $PSScriptRoot\Local\Export-PSCredentials.ps1
+  . $PSScriptRoot\Local\Import-PSCredentials.ps1
 
   function Set-SYMCLI-Options {
 	
@@ -252,7 +254,8 @@
         $csvRec = $symmID + "," + $faPort + "," + $wwn + "," + $node + "," + $pname + ",";
         $csvRec += $fcid + "," + $onFA + "," + $onFab;
 
-        $csvRec | Out-File -Append -Encoding ascii -FilePath $csvFile
+        $csvRec | Out-File -Append -Encoding ascii -FilePath $Script:csvFile
+
       }
 
     }
@@ -325,6 +328,11 @@
       $remote = $_.remote;
       $symm = $_.Model
       $symmSid = $_.sid;
+
+      $Script:csvFile = $Global:FAPath + "\" +  $symmSid + "_ListLogins-" + $Script:org + ".csv";
+      if (Test-Path $Script:csvFile) {
+        Remove-Item -Path $Script:csvFile | Out-Null
+      }
       
       if ([string]::IsNullOrEmpty($remote)) {
         Write-Host "Skipping $symm : $symmSid no symcli server available" -ForegroundColor Red;
@@ -346,19 +354,31 @@
   }
 
   function Show-Logins {
-    $matchMe = "*_ListLogins-" + $Script:org + ".csv"
-    $loginFile = Get-ChildItem -Path $Global:FAPath |
-	    Where-Object {$_.PSChildName -Like $matchME} |
-	    Sort-object -property @{Expression={$_.LastWriteTime}; Ascending=$false}; 
-    #$loginFile | get-member | Out-Host
-    if ($loginFile.count -gt 1) {
-      $FileIn = $loginFile.FullName[0]
+
+    $FileIn = $Global:FAPath + "\" + "Current_ListLogins-" + $Script:org + ".csv";
+    if (Test-Path $FileIn) {
+      Import-CSV -Path $FileIn -Header $LogInHeader | Out-GridView -Title $FileIn
     } else {
-      $FileIn = $loginFile.FullName
+      Write-Host "$FileIn NOT FOUND" -ForegroundColor Red
     }
-    #Read-Host "file: $FileIn - $faPath"
-    Import-CSV -Path $FileIn -Header $LogInHeader | Out-GridView -Title $FileIn
+
   }
+
+  function Merge-Logins {
+
+    $mergeFile = $Global:FAPath + "\" + "Current_ListLogins-" + $Script:org + ".csv";
+    if (Test-Path $mergeFile) {
+        Remove-Item -Path $mergeFile | Out-Null
+    }
+
+    $matchMe = "[0-9][0-9][0-9][0-9]_ListLogins-" + $Script:org + ".csv"
+    Get-ChildItem -Path $Global:FAPath |
+	    Where-Object {$_.PSChildName -Like $matchME} |
+      ForEach-Object {
+        Get-Content $_.FullName -ReadCount 0 | Out-File $mergeFile -Append -Encoding Ascii
+      } 
+  }
+
 
   function Set-SymmDefaults {
     
@@ -431,15 +451,18 @@
       .PARAMETER SetLogin
         Adds the storage port login entries from the specified sid to a csv file found in the folder:
 
-        <execution path>\FAInfo\Current_ListLogins-<Org>.csv
+        <execution path>\FAInfo\<sid>_ListLogins-<Org>.csv
 
       .PARAMETER ListLogin
-        Displays the contents of the most recent login csv file named:
+        Displays the contents of the most recent merged login csv file named:
 
         <execution path>\FAInfo\Current_ListLogins-<Org>.csv
 
       .PARAMETER SumLogin
         Displays a count of the initiators logged in and not logged in per storage port.
+
+      .PARAMETER MergeLogin
+        Merges the individual array login csv files into the csv file, Current_ListLogins-<Org>.csv
 
       .PARAMETER Org
         Each XMLDB record has an Org value. By default the first record in the XMLDB
@@ -452,9 +475,7 @@
         Determines which communication access method used to access the array.
 
         symcli  - Solution Enabler (command line interface)
-        restapi - RESTAPI protocol
-        
-        The restapi is not implemented at this time.
+        restapi - RESTAPI protocol (The restapi is not implemented at this time)
 
       .INPUTS
         The folders named, SWInfo/<fabric name> each contain an extracted copy of the flogi
@@ -484,22 +505,34 @@
         Set-VeSymmLogin -sid 1136 -SetLogin
 
         Adds storage port login entries, to a csv file named,
-        <execution path>\FAInfo\Current_ListLogins-<Org>.csv for VMAX array 1136.
+        <execution path>\FAInfo\1136_ListLogins-<Org>.csv for VMAX array 1136.
 
         Set-SymmLogin -sid 0000 -SetLogin
 
         For each symmetric array in the XMLDB, the storage port login entries will
         be appended to the csv file named:
 
-        <execution path>\FAInfo\Current_ListLogins-<Org>.csv
-
-        If the csv file has a 'LastWriteTime' older than 24 hours, the current csv file
-        will be rename to OLD and a new csv file will be created.
+        <execution path>\FAInfo\<sid>_ListLogins-<Org>.csv
 
       .EXAMPLE
         Set-VeSymmLogin -sid 0134 -ListLogin
 
-        Displays the storage port login entries in the most recent csv file.
+        Displays the storage port login entries in the most recent merged csv file.
+
+        Set-VeSymmLogin -sid 0000
+
+        Displays the storage port login entries for all arrays.
+
+      .EXAMPLE
+        Set-VeSymmLogin -sid 0000 -MergeLogin
+
+        The set of individual array login csv files are merged into the csv file,
+        <execution path>\FAInfo\Current_ListLogins-<Org>.csv using the default Org.
+
+        Set-VeSymmLogin -MergoLogin -Org Mojo
+
+        The set of individual array login csv files for the 'Mojo' organization are
+        merged into the csv file, <execution path>\FAInfo\Current_ListLogins-Mojo.csv
 
       .EXAMPLE
         Set-VeSymmAlias -sid 0955 -SumLogin
@@ -509,6 +542,7 @@
       .NOTES
 
         Author: Craig Dayton
+        0.0.2.4  07/27/2017 : Array Logins track in individual files & merged to master
         0.0.2.3  07/20/2017 : cadayton : Converted to cmdlet, Set-VeSymmLogin
         Updated: 02/11/2017 - initial release.
         
@@ -556,14 +590,19 @@
             [switch]$SumLogin,
             [Parameter(Position=5,
               Mandatory=$false,
+              HelpMessage = "View FA Login CSV file",
+              ValueFromPipeline=$True)]
+              [ValidateNotNullorEmpty()]
+            [switch]$MergeLogin,
+            [Parameter(Position=6,
+              Mandatory=$false,
               HelpMessage = "Organization Name",
               ValueFromPipeline=$True)]
-            [string]$Org = $null
-            
+            [string]$Org = $null         
         )
       #
 
-      Write-Host "Set-VeSymmLogin version 0.0.2.3" -ForegroundColor Green
+      Write-Host "Set-VeSymmLogin version 0.0.2.4" -ForegroundColor Green
 
       $rdom       = Get-Random -Maximum 999 -Minimum 101;
 
@@ -577,40 +616,20 @@
         return 
       }
 
-      $csvFile = $Global:FAPath + "\" + "Current_ListLogins-" + $Script:org + ".csv";
-      $oldFile = $Global:FAPath + "\" + "Old_ListLogins-" + $Script:org + ".csv";
-
-      # Age off $csvFile if older that 24 hours
-        if ($SetLogin) {
-          if (Test-Path $csvFile) {
-            $ci = Get-ChildItem -Path $csvFile;
-            $lastWrite = $ci.LastWriteTime;
-            $lwAge = New-TimeSpan -Start $lastWrite;
-            $lwDayInHours = $lwAge.Days * 24;
-            $lwHours = $lwAge.Hours + $lwDayInHours;
-            if ($lwHours -gt 24) { # rename to old
-              if (Test-Path $oldFile) {
-                Remove-Item $oldFile;
-              }
-              Rename-Item -Path $csvFile -NewName $oldFile;
-            }
-          }
-        }
-      #
-
       switch ($api) {
         "symcli" {
           Set-symapi_db;
           if ($sid) {
             if ($ListLogin) {
               Show-Logins;
+            } elseif ($MergeLogin) {
+               Merge-Logins;
             } elseif ($sid -ne "0000") {
               $Script:xmlDB.SelectNodes("//Array") | Where-Object {$_.sid -match $sid -and $_.Org -match $Script:org} | Get-Symm-ArrayInfo
             } else {
               $Script:xmlDB.SelectNodes("//Array") | Where-Object {$_.Model -match "VMAX" -and $_.Org -match $Script:org} | Get-Symm-ArrayInfo
             }
           }
-          if ($SetLogin) { Write-Host "Created $csvFile" -ForegroundColor Magenta };
           if (Test-Path $rstFile) { Remove-Item -Path $rstFile; }
         }
         "restapi" {

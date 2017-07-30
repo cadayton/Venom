@@ -33,13 +33,30 @@ example of the order of execution as well as a way to batch processs all of the 
 
 The typical work is to execute the following sequence of cmdlets on a schedule that is appropriate.
 
-    Update-VeFlogi -FabricName SOS_Fabric_A
+    Set-VeDeviceAlias -FabricName All
 
-This updates the flogi database records maintained locally in the csv files.  All flogi entries can
-be updated with one execution.
+This generates a new device-alias command files for all switches in all fabrics.  See the documentation for this cmdlet.
+
+    Set-VeDeviceAlias -FabricName All -apply
+
+This reads each of the just created device-alias command files and **applies** the device-alias command on each of the switches. See the documentation for this cmdlet.
 
     Update-VeFlogi -FabricName All
 
+This dumps a fresh set of flogi csv files for each of the switches in all fabrics.
+
 With a fresh set of flogi records and device-alias names, update the Symmetrix aliases for each array.
 
-    Set-VeSymmLogin -sid 0134
+    Set-VeSymmLogin -sid 0000
+
+This generates a FA login csv file for each array in the directory,
+[execution folder]\\FALogin\\[sid]-ListLogins-[Org].csv.
+
+    Set-VeSymmLogin -sid 0000 -MergeLogin
+
+This merges all of the individual login csv files into a single csv login file,
+[execution folder]\\FALogin\\Current-ListLogins-[Org].csv.
+
+**Wow** sounds like a lot steps doesn't it. Creating a function within a  
+PowerShell profile that executes each of the above cmdlets will allow execution of these cmdlets as a single command.
+

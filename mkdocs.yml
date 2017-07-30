@@ -18,6 +18,8 @@ pages:
     - Enable-VePorts: Enable-VePorts.md
   - Pure Storage cmdlets:
     - Get-VePureMetrics: Get-VePureMetrics.md
+    - Show-VePureHostVols: Show-VePureHostVols.md
+    - Copy-VePureHostVol: Copy-VePureHostVol.md
   - Symmetrix cmdlets:
     - Get-VeSymmMetrics: Get-VeSymmMetrics.md
     - Set-VeSymmLogin: Set-VeSymmLogin.md

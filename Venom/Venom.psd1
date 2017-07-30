@@ -12,7 +12,7 @@
 RootModule = 'Venom.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2.3'
+ModuleVersion = '0.2.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -66,12 +66,13 @@ Description = 'SAN Automation with Powershell'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('SymmMetrics.psm1','Progress.psm1','PureMetrics.psm1','Cisco.psm1','Symm.psm1')
+NestedModules = @('SymmMetrics.psm1','Progress.psm1','PureMetrics.psm1','Cisco.psm1','Symm.psm1','Pure.psm1')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @('Get-VeArrayInfo','Update-VeArrayInfo','Get-VeSymmMetrics','Get-VePureMetrics',
                     'Set-VeDeviceAlias','Enable-VePorts','Connect-VeFabric','Update-VeFlogi',
-                    'Set-VeSymmLogin','Find-VeSymmLogin','Start-VeUnisphere','Start-VeVappManager','Start-VeEcomConfig')
+                    'Set-VeSymmLogin','Find-VeSymmLogin','Start-VeUnisphere','Start-VeVappManager','Start-VeEcomConfig',
+                    'Show-VePureHostVols','Copy-VePureHostVol')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -89,7 +90,7 @@ AliasesToExport = '*'
 # ModuleList = @()
 
 # List of all files packaged with this module
-FileList = @('Venom.psd1','ReadMe.md','SymmMetrics.psm1','PureMetrics.psm1','Cisco.psm1','Symm.psm1')
+FileList = @('Venom.psd1','ReadMe.md','SymmMetrics.psm1','PureMetrics.psm1','Cisco.psm1','Symm.psm1','Pure.psm1')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
