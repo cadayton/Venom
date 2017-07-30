@@ -12,6 +12,8 @@
 # Non-Exported Functions
 
 	. $PSScriptRoot\Local\Get-ArrayInfoXML.ps1
+	. $PSScriptRoot\Local\Export-PSCredentials.ps1
+  . $PSScriptRoot\Local\Import-PSCredentials.ps1
 
 	# Utility Functions
 

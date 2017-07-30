@@ -14,6 +14,8 @@ All the scripts are functioning today indivdually on Windows 10 and I'm going th
 
 cmdlet | Description | Version | Date | Author
 -------| ----------- | ------- | ---- | -------
+Show-VePureHostVols | Show hosts disk volumes on PureStorage array | 0.0.2.4 | 07/29/2017 | cadayton
+Copy-VePureHostVol | Create PureStorage SNAP volume | 0.0.2.4 | 07/29/2017 | cadayton
 Get-VeArrayInfo | Storage array inventory & capacity data. | 0.0.2.0 | 07/07/2017 | cadayton
 Update-VeArrayInfo | Updates capacity data for most storage arrays. | 0.0.2.1 | 07/10/2017 | cadayton
 Get-VeSymmMetrics | View various Symmetrix performance data. | 0.0.2.0 | 07/07/2017 | cadayton
